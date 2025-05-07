@@ -1,6 +1,6 @@
 import { BookmarksManager } from './managers'
 
-const SIMILARITY_THRESHOLD = 0.3
+const SIMILARITY_THRESHOLD = 0.2
 
 const bookmarkManager = new BookmarksManager()
 
@@ -11,14 +11,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // sendResponse(bookmarks)
     } else if (message.action === 'search') {
       (async function func() {
-        const searchText = message.searchText;
+        const searchText = message.searchText.toLowerCase();
         const embed = await createEmbedder()
         const bookmarks = await bookmarkManager.getBookmarks();
         let embeddings = []
         try {
           embeddings = await embed(
             bookmarks
-            .map((b) => b.title)
+            .map((b) => b.title.toLowerCase())
             .filter((t) => !!t.trim())
           );
         } catch(e) {
@@ -31,10 +31,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     
         for (let i = 0; i < embeddings.length; i++) {
           let s = similarity(searchEmbedding[0], embeddings[i])
-          if (Number.isNaN(s)) {
-            console.log("HIT NAN")
-            s = Number.NEGATIVE_INFINITY
-          }
           results.push([bookmarks[i], s])
         }
         console.log(results)
@@ -106,9 +102,26 @@ async function createEmbedder(model_name = "minishlab/potion-base-8M", options =
 
     // Calculate offsets
     const offsets = [0];
-    for (let i = 0; i < input_ids.length - 1; i++) {
-      offsets.push(offsets[i] + input_ids[i].length);
+    if (Array.isArray(input_ids[0])) {
+      for (let i = 0; i < input_ids.length - 1; i++) {
+        if (input_ids[i].length > 0) {
+          const v = offsets[i] + input_ids[i].length
+          offsets.push(v);
+        } else {
+          const v = offsets[i] + 1
+          offsets.push(v);
+        }
+        // const v = offsets[i] + input_ids[i].length
+        // if (Number.isNaN(v)) {
+        //   console.log("Hit NaN: ", offsets[i], input_ids[i.length])
+        // }
+        // offsets.push(v);
+      }
+    } else {
+      offsets.push(input_ids.length);
     }
+
+    
 
     // Create tensors and get embeddings from flattened input ids and offsets
     const flattened_input_ids = input_ids.flat();
