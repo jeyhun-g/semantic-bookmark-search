@@ -1,16 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import './App.css'
 import { Bookmark } from '../types'
+import { SearchInput } from './components/SearchInput'
+import { BookmarkCard } from './components/BookmarkCard'
 
 function App() {
-  const [searchText, setSearchText] = useState<string>("")
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
 
-  const searchBookmarks = async () => {
+  const search = useCallback(async (searchText: string) => {
+    if (!searchText) {
+      setBookmarks([])
+      return
+    }
+
     const bookmark_list = await chrome.runtime.sendMessage({ action: 'search', searchText })
     console.log(bookmark_list)
     setBookmarks(bookmark_list)
-  }
+  }, [])
 
   useEffect(() => {
     const listener = (message: any) => {
@@ -22,20 +28,13 @@ function App() {
   }, [])
 
   return (
-    <>
-      <h1>Vite + React</h1>
-      <input value={searchText} onChange={(e) => {
-        setSearchText(e.target.value)
-      }} />
-      
-      <button onClick={searchBookmarks}>
-        Search
-      </button>
+    <div className="min-w-80 min-h-40 max-w-80 py-4 px-4">
+      <SearchInput onSearch={search} />
 
       {bookmarks?.length > 0 ? bookmarks.map((b) => (
-        <div>{b.title}</div>
+        <BookmarkCard bookmark={b} />
       )) : <p>Not filtered yet</p>}
-    </>
+    </div>
   )
 }
 

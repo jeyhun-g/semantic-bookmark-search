@@ -111,17 +111,10 @@ async function createEmbedder(model_name = "minishlab/potion-base-8M", options =
           const v = offsets[i] + 1
           offsets.push(v);
         }
-        // const v = offsets[i] + input_ids[i].length
-        // if (Number.isNaN(v)) {
-        //   console.log("Hit NaN: ", offsets[i], input_ids[i.length])
-        // }
-        // offsets.push(v);
       }
     } else {
       offsets.push(input_ids.length);
     }
-
-    
 
     // Create tensors and get embeddings from flattened input ids and offsets
     const flattened_input_ids = input_ids.flat();
