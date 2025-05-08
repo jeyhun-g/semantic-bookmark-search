@@ -43,8 +43,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         let results = []
     
         for (let i = 0; i < embeddings.length; i++) {
-          let s = similarity(searchEmbedding[0], embeddings[i])
-          results.push([bookmarks[i], s])
+          const bookmark = bookmarks[i]
+          let s;
+          if (
+            bookmark.title.toLowerCase().includes(searchText)
+          ) {
+             s = 1.0; 
+          } else {
+            s = similarity(searchEmbedding[0], embeddings[i])
+          }
+          results.push([bookmark, s])
         }
         console.log(results)
         

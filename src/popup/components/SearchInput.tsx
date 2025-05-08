@@ -30,7 +30,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       <input
         type="text"
         className="grow-2 outline-0"
-        placeholder="Search bookmarks..."
+        placeholder="Search bookmarks by topic..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
         autoFocus
