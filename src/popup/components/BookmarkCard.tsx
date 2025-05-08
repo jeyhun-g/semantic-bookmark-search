@@ -20,7 +20,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
     >
       <div className="font-medium text-sm text-gray-900">{bookmark.title}</div>
       <div className="text-xs text-gray-500 truncate">{bookmark.url}</div>
-      <div className="text-xs text-gray-500 truncate">{"folder-path"}</div>
+      <div className="text-xs text-gray-500">{bookmark.folders.join(' -> ')}</div>
     </div>
   );
 };
