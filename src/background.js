@@ -4,6 +4,19 @@ const SIMILARITY_THRESHOLD = 0.2
 
 const bookmarkManager = new BookmarksManager()
 
+
+class Embedder {
+  instance
+
+  static async getInstance(){
+    if (!this.instance) {
+      this.instance = await createEmbedder()
+    }
+
+    return this.instance
+  }
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log('sender', sender)
     if (message.action === 'get_bookmarks') {
@@ -12,7 +25,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     } else if (message.action === 'search') {
       (async function func() {
         const searchText = message.searchText.toLowerCase();
-        const embed = await createEmbedder()
+        const embed = await Embedder.getInstance()
         const bookmarks = await bookmarkManager.getBookmarks();
         let embeddings = []
         try {
