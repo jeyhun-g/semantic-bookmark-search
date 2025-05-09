@@ -12,7 +12,11 @@ export default defineConfig({
         {
           src: 'public/manifest.json',
           dest: '.',
-        }
+        },
+        {
+          src: 'models/*',
+          dest: './models',
+        },
       ],
     }),
   ],

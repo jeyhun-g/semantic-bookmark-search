@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { CircleX } from 'lucide-react';
 
 interface SearchInputProps {
   onSearch: (query: string) => void;
@@ -41,7 +42,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           onClick={() => setInput("")}
           aria-label="Clear search"
         >
-          X
+          <CircleX size={18} />
         </button>
       )}
     </div>

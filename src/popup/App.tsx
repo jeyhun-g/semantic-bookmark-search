@@ -2,19 +2,21 @@ import { useEffect, useState, useCallback } from 'react'
 import './App.css'
 import { Bookmark } from '../types'
 import { SearchInput } from './components/SearchInput'
-import { BookmarkCard } from './components/BookmarkCard'
+import { BookmarkList } from './components/BookmarkList'
+import { Loading } from './components/Loading'
 
 function App() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
 
   const search = useCallback(async (searchText: string) => {
     if (!searchText) {
       setBookmarks([])
       return
     }
-
+    setLoading(true)
     const bookmark_list = await chrome.runtime.sendMessage({ action: 'search', searchText })
-    console.log(bookmark_list)
+    setLoading(false)
     setBookmarks(bookmark_list)
   }, [])
 
@@ -28,12 +30,18 @@ function App() {
   }, [])
 
   return (
-    <div className="min-w-80 min-h-40 max-w-80 py-4 px-4">
+    <div className="flex flex-col min-w-80 min-h-40 max-w-80 py-4 px-4">
       <SearchInput onSearch={search} />
-
-      {bookmarks?.length > 0 ? bookmarks.map((b) => (
-        <BookmarkCard bookmark={b} />
-      )) : <p>Not filtered yet</p>}
+      {loading ? (
+        <div className='flex grow justify-center items-center'>
+          <Loading size={32} />
+        </div>
+      ) 
+      : <BookmarkList bookmarks={bookmarks} />
+      }
+      
+      
+      
     </div>
   )
 }

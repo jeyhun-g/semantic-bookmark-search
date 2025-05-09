@@ -10,6 +10,7 @@ class Embedder {
 
   static async getInstance(){
     if (!this.instance) {
+      // this.instance = await PipelineSingleton.getInstance();
       this.instance = await createEmbedder()
     }
 
@@ -70,8 +71,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 
-import { AutoModel, AutoTokenizer, Tensor } from "@huggingface/transformers";
+import { AutoModel, AutoTokenizer, Tensor, pipeline } from "@huggingface/transformers";
 import similarity from "compute-cosine-similarity";
+
+class PipelineSingleton {
+    static task = 'feature-extraction';
+    static model = 'minishlab/potion-base-8M';
+    static instance = null;
+
+    static async getInstance(progress_callback = null) {
+        this.instance ??= pipeline(this.task, this.model, {
+          progress_callback,
+          subfolder: "minishlab",
+          local_files_only: true,
+          model_file_name: "potionBase8M.safetensors"
+        });
+
+        return this.instance;
+    }
+}
 
 /**
  * Creates an embedder function with cached model and tokenizer
@@ -148,38 +166,3 @@ async function createEmbedder(model_name = "minishlab/potion-base-8M", options =
     return embeddings.tolist();
   };
 }
-
-async function run() {
-  const embed = await createEmbedder()
-
-  const texts = [
-    "10 Principles of design patterns",
-    "How to bake an apple pie",
-    "Car manuals",
-    "React native bottomsheets",
-    "Angular framework",
-    "Developer roadmaps",
-    "JS the right way",
-    "Wired Elements Showcase",
-    "Netflix blog",
-    "Engineering at Meta"
-  ]
-  
-  const embeddings = await embed(texts)
-  
-  const searchText = "books about javascript"
-  const searchEmbedding = await embed([searchText])
-  let results = []
-  
-  for (let i = 0; i < embeddings.length; i++) {
-    const s = similarity(searchEmbedding[0], embeddings[i])
-    results.push([texts[i], s])
-  }
-  
-  results = results.sort((a, b) => {
-    return a[1] < b[1] ? 1 : a[1] === b[1] ? 0 : -1
-  })
-  
-  results.forEach(console.log)
-}
-
