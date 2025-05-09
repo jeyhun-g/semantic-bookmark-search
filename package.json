@@ -1,10 +1,11 @@
 {
   "name": "semmark",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Search your bookmarks by meaning, not just keywords. Find what you saved—even if you forgot the exact words.",
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "vite build --watch",
+    "package": "npm run build && zip -r extension.zip build"
   },
   "type": "module",
   "author": "Xenova",
