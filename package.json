@@ -5,7 +5,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "package": "rm -f extension.zip && npm run build && zip -r extension.zip build"
+    "pack": "rm -f extension.zip && npm run build && zip -r extension.zip build"
   },
   "type": "module",
   "license": "MIT",
