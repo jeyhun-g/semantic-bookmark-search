@@ -8,7 +8,6 @@
     "package": "rm -f extension.zip && npm run build && zip -r extension.zip build"
   },
   "type": "module",
-  "author": "Xenova",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.27.1",

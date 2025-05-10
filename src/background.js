@@ -1,4 +1,6 @@
 import { BookmarksManager } from './managers'
+import { logger } from './logger'
+
 
 const SIMILARITY_THRESHOLD = 0.2
 
@@ -112,9 +114,11 @@ async function createEmbedder(model_name = "minishlab/potion-base-8M", options =
     model_type = "model2vec",
     model_revision = "main", 
     tokenizer_revision = "main", 
-    device = undefined,
+    device = "wasm",
     dtype = "fp32", 
   } = options;
+
+  logger.suppressError("CanUpdateImplicitInputNameInSubgraphs")
 
   const model = await AutoModel.from_pretrained(model_name, {
     config: { model_type },
@@ -126,6 +130,8 @@ async function createEmbedder(model_name = "minishlab/potion-base-8M", options =
   const tokenizer = await AutoTokenizer.from_pretrained(model_name, {
     revision: tokenizer_revision,
   });
+
+  logger.unsuppressError("CanUpdateImplicitInputNameInSubgraphs")
   
   /**
    * Generate embeddings for the provided texts
