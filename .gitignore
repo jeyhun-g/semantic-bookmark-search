@@ -5,3 +5,5 @@ build/
 
 # packaged extension
 extension.zip
+
+.coverage

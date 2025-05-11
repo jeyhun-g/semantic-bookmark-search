@@ -1,4 +1,6 @@
-class Logger {
+export const consoleError = console.error
+export class Logger {
+  private static instance: Logger
   private suppressedErrors: Record<string, boolean>
 
   constructor() {
@@ -14,10 +16,8 @@ class Logger {
     delete this.suppressedErrors[log]
   }
 
-  private configureErrorLogging() {
-    const originalErrorLogger = console.error
+  protected configureErrorLogging() {
     const suppressedErrors = this.suppressedErrors
-
     console.error = function (...args) {
       if (
         args.some(
@@ -29,11 +29,15 @@ class Logger {
         return;
       }
     
-      originalErrorLogger.apply(console, args);
+      consoleError.apply(console, args);
     };
   }
+
+  public static init() {
+    if (!this.instance) {
+      this.instance = new Logger()
+    }
+
+    return this.instance
+  }
 }
-
-const logger = new Logger()
-
-export { logger }
