@@ -2,7 +2,6 @@ import { AutoModel, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer, Tensor 
 import { Logger } from './../logger'
 
 const logger = Logger.getLogger()
-
 export class EmbedderSingleton {
   private static instance: EmbedderSingleton 
 

@@ -1,5 +1,5 @@
 import { BookmarksManager } from './managers'
-import { accurateSearch, fastSearch } from './Search';
+import { accurateSearch, fastSearch } from './search';
 import { Bookmark } from './types';
 
 const bookmarkManager = new BookmarksManager()
@@ -11,7 +11,6 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
       const searchText: string = message.searchText.toLowerCase();
       const isFastSearch: boolean = message.isFastSearch
       let results: Bookmark[] = []
-      console.log("isFastSearch: ", isFastSearch)
       if (isFastSearch) {
         results = await fastSearch(searchText, bookmarkManager)
       } else {

@@ -34,6 +34,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
       <div className="font-medium text-sm text-gray-900">{bookmark.title}</div>
       <div className="text-xs mt-1 text-gray-500 truncate">{bookmark.url}</div>
       <div className="flex flex-wrap mt-2 text-gray-500">{path}</div>
+      <div>{bookmark.keywords.join(" > ")}</div>
     </div>
   );
 };

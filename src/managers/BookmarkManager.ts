@@ -1,4 +1,5 @@
 import { Bookmark, BookmarkChangeInfo, BookmarkMovedInfo } from '../types'
+import { extractKeywords } from '../Keywords'
 
 interface BookmarkNodeTreeWrapper {
   treeNode: chrome.bookmarks.BookmarkTreeNode
@@ -31,29 +32,30 @@ export class BookmarksManager {
       path: []
     }))
 
-    while(nodes.length > 0) {
+    while(nodes.length > 0) { 
       const node = nodes.pop()
       if (!node) break;
 
       const { treeNode, path } = node
 
-        if (treeNode?.children) {
-          nodes.push(...treeNode.children.map<BookmarkNodeTreeWrapper>((c) => ({
-              treeNode: c,
-              path: [...path, c.title]
-            })
-          ))
-          continue
+      if (treeNode?.children) {
+        nodes.push(...treeNode.children.map<BookmarkNodeTreeWrapper>((c) => ({
+            treeNode: c,
+            path: [...path, c.title]
+          })
+        ))
+        continue
+      }
+
+      if (treeNode?.url && treeNode.dateAdded) {
+        this.bookmarks[treeNode.id] = {
+          title: treeNode.title,
+          url: treeNode.url,
+          createdAt: treeNode.dateAdded,
+          folders: path,
+          keywords: extractKeywords(treeNode.title)
         }
-  
-        if (treeNode?.url && treeNode.dateAdded) {
-          this.bookmarks[treeNode.id] = {
-            title: treeNode.title,
-            url: treeNode.url,
-            createdAt: treeNode.dateAdded,
-            folders: path
-          }
-        }
+      }
     }
   }
 
@@ -72,7 +74,8 @@ export class BookmarksManager {
         title: bookmark.title,
         url: bookmark.url,
         createdAt: bookmark.dateAdded,
-        folders: path
+        folders: path,
+        keywords: extractKeywords(bookmark.title)
       }
     }
   }
