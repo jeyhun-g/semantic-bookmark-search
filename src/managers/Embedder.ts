@@ -1,5 +1,7 @@
 import { AutoModel, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer, Tensor } from "@huggingface/transformers";
-import { logger } from './../logger'
+import { Logger } from './../logger'
+
+const logger = Logger.getLogger()
 
 export class EmbedderSingleton {
   private static instance: EmbedderSingleton 

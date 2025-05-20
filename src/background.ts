@@ -4,13 +4,14 @@ import { Bookmark } from './types';
 
 const SIMILARITY_THRESHOLD = 0.2
 const bookmarkManager = new BookmarksManager()
+bookmarkManager.registerListeners()
 
 chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
     if (message.action === 'search') {
       (async function func() {
         const searchText = message.searchText.toLowerCase();
         const embedder = await EmbedderSingleton.getInstance()
-        const bookmarks = await bookmarkManager.getBookmarks();
+        const bookmarks = await bookmarkManager.getBookmarksAsList();
         let embeddings: any[] = await embedder.getEmbeddings(
           bookmarks
           .map((b) => b.title.toLowerCase())

@@ -12,4 +12,16 @@ export interface MessageSender {
   url?: string
 } 
 
+export interface BookmarkChangeInfo {
+  title: string
+  url?: string
+}
+
+export interface BookmarkMovedInfo {
+  index: number
+  oldIndex: number
+  oldParentId: string
+  parentId: string
+}
+
 export type SendMessageListener = <M>(message: M, sender: MessageSender, sendResponse: () => void) => boolean | undefined

@@ -33,7 +33,7 @@ export class Logger {
     };
   }
 
-  public static init() {
+  public static getLogger() {
     if (!this.instance) {
       this.instance = new Logger()
     }
