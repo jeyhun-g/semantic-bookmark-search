@@ -2,8 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tailwindcss from '@tailwindcss/vite'
-
-const isProd = process.env.NODE_ENV === 'production'
+import replace from '@rollup/plugin-replace';
+import renameFiles from './plugins/renameFiles'
 
 export default defineConfig({
   plugins: [
@@ -17,9 +17,18 @@ export default defineConfig({
         },
       ],
     }),
+    replace({
+      preventAssignment: true,
+      '_commonjsHelpers.js': "commonjsHelpers.js",
+    }),
+    renameFiles({
+      filenames: {
+        '_commonjsHelpers.js': 'commonjsHelpers.js'
+      }
+    })
   ],
   build: {
-    minify: isProd,
+    minify: false,
     outDir: 'build',
     target: 'chrome92',
     rollupOptions: {

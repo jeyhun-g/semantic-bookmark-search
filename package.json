@@ -14,6 +14,7 @@
     "@babel/core": "^7.27.1",
     "@babel/preset-env": "^7.27.1",
     "@babel/preset-react": "^7.27.1",
+    "@rollup/plugin-replace": "^6.0.2",
     "@types/chrome": "^0.0.320",
     "@types/jest": "^29.5.14",
     "@vitejs/plugin-react": "^4.4.1",
@@ -27,7 +28,7 @@
     "sass": "^1.87.0",
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
-    "tailwindcss": "^4.1.5",
+    "tailwindcss": "^4.1.7",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "url-loader": "^4.1.1",
@@ -38,6 +39,7 @@
     "webpack-dev-server": "^5.2.1"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.4",
     "@huggingface/transformers": "^3.5.1",
     "@tailwindcss/vite": "^4.1.5",
     "@types/react": "^19.1.3",
