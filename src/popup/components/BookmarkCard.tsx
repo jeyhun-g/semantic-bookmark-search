@@ -15,14 +15,16 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
   const path = useMemo(() => {
     return bookmark.folders.map((folder, i) => {
       if (i === bookmark.folders.length - 1) {
-        return <p>{folder}</p>
+        return <p key={i}>{folder}</p>
       }
 
-      return <span className="flex flex-row justify-center items-center mr-1">
-        <Folder size={12} className="mr-1" />
-        <p>{folder}</p>
-        <MoveRight className="ml-1" size={12} />
-      </span>
+      return (
+        <span key={i} className="flex flex-row justify-center items-center mr-1">
+          <Folder size={12} className="mr-1" />
+          <p>{folder}</p>
+          <MoveRight className="ml-1" size={12} />
+        </span>
+      )
     })
   }, [bookmark])
   return (

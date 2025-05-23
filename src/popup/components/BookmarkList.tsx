@@ -25,7 +25,13 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
   return (
     <div className="mt-4">
       <p>Bookmarks found: {bookmarks.length}</p>
-      {bookmarks.map((b) => <BookmarkCard bookmark={b} onClick={openBookmark} />)}
+      {bookmarks.map((b, i) => {
+        return (
+          <span key={`${b.title}-${i}`}>
+            <BookmarkCard bookmark={b} onClick={openBookmark} />
+          </span>
+        )
+      })}
     </div>
   )
 };
