@@ -37,7 +37,9 @@ function SearchPage() {
   }, [searchText, isFastSearch])
 
   return (
-    <div className="flex flex-col min-w-80 min-h-40 max-w-80 py-4 px-4">
+    <div className="flex flex-col min-w-80 min-h-80 max-w-80 py-4 px-4">
+      <p className="my-2 text-center text-xl">BookmarkIQ</p>
+      
       <SearchInput searchText={searchText} onSearch={setSearchText} />
 
       <div className="flex flex-row items-center justify-center mt-2">
