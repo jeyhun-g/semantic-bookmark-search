@@ -2,17 +2,23 @@ import React, { useEffect, useState } from "react";
 import { CircleX } from 'lucide-react';
 
 interface SearchInputProps {
+  searchText?: string
   onSearch: (query: string) => void;
   debounceDelay?: number;
 }
 
 export const SearchInput: React.FC<SearchInputProps> = ({
+  searchText,
   onSearch,
   debounceDelay = 500,
 }) => {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(searchText ?? "");
 
   useEffect(() => {
+    if (input === searchText) {
+      return
+    }
+
     if (input === "") {
       onSearch("");
       return;
